@@ -23,18 +23,44 @@ public class EmployeeDTO {
 	@Pattern(regexp = "^[0-9]{10}$", message = "Phone number must contain 10 digits")
 	private String phone;
 
+	@NotBlank(message = "Password is required")
+	@Size(min = 6, message = "Password must be at least 6 characters")
+	private String password;
+
+	@NotBlank(message = "Role is required")
+	private String role;
+
 	public EmployeeDTO() {
 		super();
 
 	}
 
-	public EmployeeDTO(Long id, String name, String email, String department, String phone) {
+	public EmployeeDTO(Long id, String name, String email, String department, String phone, String password,
+			String role) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.department = department;
 		this.phone = phone;
+		this.password = password;
+		this.role = role;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public Long getId() {

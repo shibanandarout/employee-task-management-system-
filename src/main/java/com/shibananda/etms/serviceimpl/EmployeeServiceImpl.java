@@ -54,6 +54,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmail(employeeDTO.getEmail());
 		employee.setDepartment(employeeDTO.getDepartment());
 		employee.setPhone(employeeDTO.getPhone());
+		employee.setPassword(employeeDTO.getPassword());
+		employee.setRole(employeeDTO.getRole());
 
 		Employee updatedEmployee = employeeRepository.save(employee);
 
@@ -78,6 +80,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmail(employeeDTO.getEmail());
 		employee.setDepartment(employeeDTO.getDepartment());
 		employee.setPhone(employeeDTO.getPhone());
+		employee.setPassword(employeeDTO.getPassword());
+		employee.setRole(employeeDTO.getRole());
 
 		return employee;
 	}
@@ -91,6 +95,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		dto.setEmail(employee.getEmail());
 		dto.setDepartment(employee.getDepartment());
 		dto.setPhone(employee.getPhone());
+		dto.setPassword(employee.getPassword());
+		dto.setRole(employee.getRole());
 
 		return dto;
 	}

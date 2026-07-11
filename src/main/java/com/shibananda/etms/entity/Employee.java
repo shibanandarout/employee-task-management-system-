@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,32 +22,52 @@ public class Employee {
 
 	private String name;
 
+	@Column(unique = true)
 	private String email;
 
 	private String department;
 
 	private String phone;
 
-	
-	
+	private String password;
+
+	private String role;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public Employee() {
 		super();
 	}
 
-	public Employee(Long id, String name, String email, String department, String phone, List<Task> tasks) {
+	public Employee(Long id, String name, String email, String department, String phone, String password, String role,
+			List<Task> tasks) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.department = department;
 		this.phone = phone;
+		this.password = password;
+		this.role = role;
 		this.tasks = tasks;
 	}
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "employee", 
-			cascade = CascadeType.ALL, 
-			orphanRemoval = true)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks;
 
 	public Long getId() {
@@ -96,5 +117,5 @@ public class Employee {
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	
+
 }
