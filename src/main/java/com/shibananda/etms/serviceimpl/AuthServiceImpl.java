@@ -1,8 +1,12 @@
 package com.shibananda.etms.serviceimpl;
 
+import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.shibananda.etms.dto.EmployeeDTO;
+import com.shibananda.etms.dto.LoginRequest;
 import com.shibananda.etms.entity.Employee;
 import com.shibananda.etms.repository.EmployeeRepository;
 import com.shibananda.etms.service.AuthService;
@@ -12,12 +16,21 @@ public class AuthServiceImpl implements AuthService {
 
 	private final EmployeeRepository employeeRepository;
 
-	public AuthServiceImpl(EmployeeRepository employeeRepository) {
+	private final PasswordEncoder passwordEncoder;
+
+	public AuthServiceImpl(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
 		this.employeeRepository = employeeRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
 	public EmployeeDTO register(EmployeeDTO employeeDTO) {
+
+		Optional<Employee> existingEmployee = employeeRepository.findByEmail(employeeDTO.getEmail());
+
+		if (existingEmployee.isPresent()) {
+			throw new RuntimeException("Email already exists");
+		}
 
 		Employee employee = new Employee();
 
@@ -25,7 +38,8 @@ public class AuthServiceImpl implements AuthService {
 		employee.setEmail(employeeDTO.getEmail());
 		employee.setDepartment(employeeDTO.getDepartment());
 		employee.setPhone(employeeDTO.getPhone());
-		employee.setPassword(employeeDTO.getPassword());
+		// employee.setPassword(employeeDTO.getPassword());
+		employee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
 		employee.setRole(employeeDTO.getRole());
 
 		Employee savedEmployee = employeeRepository.save(employee);
@@ -41,5 +55,18 @@ public class AuthServiceImpl implements AuthService {
 		dto.setRole(savedEmployee.getRole());
 
 		return dto;
+	}
+
+	@Override
+	public String login(LoginRequest loginRequest) {
+
+		Employee employee = employeeRepository.findByEmail(loginRequest.getEmail())
+				.orElseThrow(() -> new RuntimeException("Invalid Email or Password"));
+
+		if (!passwordEncoder.matches(loginRequest.getPassword(), employee.getPassword())) {
+			throw new RuntimeException("Invalid Email or Password");
+		}
+
+		return "Login Successful";
 	}
 }

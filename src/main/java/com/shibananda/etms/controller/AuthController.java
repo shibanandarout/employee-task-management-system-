@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shibananda.etms.dto.EmployeeDTO;
+import com.shibananda.etms.dto.LoginRequest;
 import com.shibananda.etms.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -27,5 +28,13 @@ public class AuthController {
 		EmployeeDTO savedEmployee = authService.register(employeeDTO);
 
 		return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+
+		String response = authService.login(loginRequest);
+
+		return ResponseEntity.ok(response);
 	}
 }
