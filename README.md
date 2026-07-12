@@ -1,67 +1,128 @@
-# 🚀 Employee Task Management System - Backend
+# 🚀 Employee Task Management System (ETMS) - Secure REST API Backend
 
-A RESTful backend application built using **Spring Boot** that enables organizations to efficiently manage employees and their assigned tasks. The application provides complete CRUD operations for Employees and Tasks, following a clean layered architecture and storing data in a PostgreSQL database.
+A secure RESTful backend application built using **Spring Boot** that enables organizations to efficiently manage employees and their assigned tasks. The application provides complete CRUD operations for Employees and Tasks with **JWT-based Authentication**, **Spring Security**, **BCrypt Password Encryption**, and **PostgreSQL** integration.
 
 ---
 
 # 📖 Project Overview
 
-The **Employee Task Management System (ETMS)** backend is designed to simplify employee and task management within an organization.
+The **Employee Task Management System (ETMS)** is designed to simplify employee and task management within an organization.
 
-It exposes REST APIs that allow clients to perform Create, Read, Update, and Delete (CRUD) operations on Employees and Tasks. The project follows Spring Boot best practices with a clean architecture consisting of Controller, Service, Repository, and Entity layers.
+The application follows a clean layered architecture consisting of **Controller**, **Service**, **Repository**, and **Entity** layers. It provides secure REST APIs for employee and task management, along with user registration and login using **JWT Authentication**.
 
 ---
 
 # ✨ Features
 
+## 🔐 Authentication & Security
+
+- User Registration
+- User Login
+- JWT Token Generation
+- Password Encryption using BCrypt
+- Duplicate Email Validation
+- Spring Security Integration
+
+---
+
 ## 👨‍💼 Employee Management
 
-* Add Employee
-* View All Employees
-* View Employee By ID
-* Update Employee Details
-* Delete Employee
+- Add Employee
+- View All Employees
+- View Employee By ID
+- Update Employee Details
+- Delete Employee
+
+---
 
 ## ✅ Task Management
 
-* Add Task
-* View All Tasks
-* View Task By ID
-* Update Task Details
-* Delete Task
+- Add Task
+- View All Tasks
+- View Task By ID
+- Update Task Details
+- Delete Task
 
 ---
 
 # 🛠️ Technologies Used
 
-* Java 17
-* Spring Boot
-* Spring Web
-* Spring Data JPA
-* Hibernate ORM
-* PostgreSQL
-* Maven
-* RESTful Web Services
-* Postman (API Testing)
-* Spring Tool Suite (STS)
+### Backend
+
+- Java 17
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Security
+- Hibernate ORM
+
+### Database
+
+- PostgreSQL
+
+### Security
+
+- JWT (JJWT)
+- BCrypt Password Encoder
+
+### Tools
+
+- Maven
+- Postman
+- Spring Tool Suite (STS)
+- Git
+- GitHub
 
 ---
 
 # 🏗️ Architecture
 
-The project follows a layered architecture:
+The project follows a layered architecture.
 
 ```text
-Controller
+                Client
+                   │
+                   ▼
+             REST Controller
+                   │
+                   ▼
+               Service Layer
+                   │
+                   ▼
+            Repository Layer
+                   │
+                   ▼
+             PostgreSQL Database
+```
+
+---
+
+# 🔐 Authentication Flow
+
+```text
+User Registration
+        │
+        ▼
+Password Encrypted using BCrypt
+        │
+        ▼
+Stored in PostgreSQL
+```
+
+```text
+User Login
       │
       ▼
-Service
+Email Verification
       │
       ▼
-Repository
+Password Verification
       │
       ▼
-PostgreSQL Database
+JWT Token Generated
+      │
+      ▼
+Token Returned to Client
 ```
 
 ---
@@ -71,37 +132,43 @@ PostgreSQL Database
 ```text
 src
 ├── main
-│   ├── java
-│   │   ├── controller
-│   │   ├── entity
-│   │   ├── repository
-│   │   ├── service
-│   │   ├── exception
-│   │   └── EmployeeTaskManagementApplication.java
-│   │
-│   └── resources
-│       └── application.properties
 │
-└── pom.xml
+├── java
+│   └── com.shibananda.etms
+│       ├── config
+│       ├── controller
+│       ├── dto
+│       ├── entity
+│       ├── exception
+│       ├── jwt
+│       ├── repository
+│       ├── service
+│       ├── serviceimpl
+│       └── EmployeeTaskManagementSystemApplication.java
+│
+└── resources
+    └── application.properties
+
+pom.xml
 ```
 
 ---
 
 # 🗄️ Database
 
-* Database : PostgreSQL
-* ORM : Hibernate (Spring Data JPA)
+- Database : PostgreSQL
+- ORM : Hibernate (Spring Data JPA)
 
 ---
 
 # ⚙️ Configuration
 
-Before running the application, update the `application.properties` file with your PostgreSQL database configuration.
+Update the `application.properties` file before running the project.
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database_name>
-spring.datasource.username=<your_username>
-spring.datasource.password=<your_password>
+spring.datasource.url=jdbc:postgresql://localhost:5432/<database_name>
+spring.datasource.username=<username>
+spring.datasource.password=<password>
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -109,48 +176,52 @@ spring.jpa.show-sql=true
 server.port=8082
 ```
 
-Replace the placeholder values with your PostgreSQL database name, username, and password.
-
-> **Note:** Never commit your actual database credentials to a public GitHub repository.
+> **Note:** Never commit your actual database credentials to a public repository.
 
 ---
 
 # ▶️ Getting Started
 
-## 1. Clone the Repository
+## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/shibanandarout/employee-task-management.git
+git clone https://github.com/shibanandarout/employee-task-management-system-.git
 ```
 
-## 2. Open the Project
+---
+
+## 2️⃣ Open the Project
 
 Import the project into:
 
-* Spring Tool Suite (STS)
-* Eclipse IDE
+- Spring Tool Suite (STS)
+- Eclipse IDE
 
-## 3. Install Dependencies
+---
+
+## 3️⃣ Install Dependencies
 
 ```bash
 mvn clean install
 ```
 
-## 4. Run the Application
+---
 
-Run the Spring Boot application by executing:
+## 4️⃣ Run the Application
+
+Run
 
 ```text
-EmployeeTaskManagementApplication.java
+EmployeeTaskManagementSystemApplication.java
 ```
 
-Or use Maven:
+or
 
 ```bash
 mvn spring-boot:run
 ```
 
-The application will start at:
+Application URL
 
 ```text
 http://localhost:8082
@@ -160,63 +231,76 @@ http://localhost:8082
 
 # 📡 REST API Endpoints
 
-## Employee APIs
+## 🔐 Authentication APIs
 
-| Method | Endpoint              | Description        |
-| ------ | --------------------- | ------------------ |
-| POST   | `/api/employees`      | Create Employee    |
-| GET    | `/api/employees`      | Get All Employees  |
-| GET    | `/api/employees/{id}` | Get Employee By ID |
-| PUT    | `/api/employees/{id}` | Update Employee    |
-| DELETE | `/api/employees/{id}` | Delete Employee    |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register User |
+| POST | `/api/auth/login` | Login & Generate JWT |
 
----
+## 👨‍💼 Employee APIs
 
-## Task APIs
-
-| Method | Endpoint          | Description    |
-| ------ | ----------------- | -------------- |
-| POST   | `/api/tasks`      | Create Task    |
-| GET    | `/api/tasks`      | Get All Tasks  |
-| GET    | `/api/tasks/{id}` | Get Task By ID |
-| PUT    | `/api/tasks/{id}` | Update Task    |
-| DELETE | `/api/tasks/{id}` | Delete Task    |
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/api/employees` | Create Employee |
+| GET | `/api/employees` | Get All Employees |
+| GET | `/api/employees/{id}` | Get Employee By ID |
+| PUT | `/api/employees/{id}` | Update Employee |
+| DELETE | `/api/employees/{id}` | Delete Employee |
 
 ---
 
-# 🧪 Testing
+## ✅ Task APIs
 
-All REST APIs were tested successfully using **Postman**.
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/api/tasks` | Create Task |
+| GET | `/api/tasks` | Get All Tasks |
+| GET | `/api/tasks/{id}` | Get Task By ID |
+| PUT | `/api/tasks/{id}` | Update Task |
+| DELETE | `/api/tasks/{id}` | Delete Task |
+
+---
+
+# 🧪 API Testing
+
+All REST APIs were successfully tested using **Postman**.
 
 ---
 
 # 📌 Project Highlights
 
-* RESTful API Development
-* CRUD Operations
-* Layered Architecture
-* Spring Boot Best Practices
-* Spring Data JPA
-* Hibernate ORM
-* PostgreSQL Integration
-* Exception Handling
-* Maven Build Management
-* Clean and Maintainable Code Structure
+- RESTful API Development
+- Layered Architecture
+- Employee CRUD Operations
+- Task CRUD Operations
+- Spring Data JPA
+- Hibernate ORM
+- PostgreSQL Integration
+- Global Exception Handling
+- DTO Pattern
+- Spring Security
+- JWT Authentication
+- BCrypt Password Encryption
+- Duplicate Email Validation
+- Maven Build Management
+- Clean and Maintainable Code
 
 ---
 
 # 🔮 Future Enhancements
 
-The following features are planned for future versions of the project:
+The following features are planned for future versions:
 
-* Spring Security with JWT Authentication
-* Role-Based Authorization
-* Swagger/OpenAPI Documentation
-* Pagination and Sorting
-* Search and Filtering
-* Docker Containerization
-* Unit and Integration Testing
-* Email Notifications
+- JWT Token Validation
+- Role-Based Authorization (Admin & Employee)
+- Protected REST APIs
+- Swagger / OpenAPI Documentation
+- Pagination & Sorting
+- Search & Filtering
+- Docker Containerization
+- Unit & Integration Testing
+- Email Notifications
 
 ---
 
@@ -226,7 +310,8 @@ The following features are planned for future versions of the project:
 
 Java Full Stack Developer
 
-GitHub: https://github.com/shibanandarout
+**GitHub**
+https://github.com/shibanandarout
 
 ---
 
