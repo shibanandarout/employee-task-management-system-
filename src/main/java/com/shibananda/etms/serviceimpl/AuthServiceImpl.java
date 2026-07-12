@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.shibananda.etms.dto.EmployeeDTO;
 import com.shibananda.etms.dto.LoginRequest;
 import com.shibananda.etms.entity.Employee;
+import com.shibananda.etms.jwt.JwtUtil;
 import com.shibananda.etms.repository.EmployeeRepository;
 import com.shibananda.etms.service.AuthService;
 
@@ -18,9 +19,12 @@ public class AuthServiceImpl implements AuthService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	public AuthServiceImpl(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
+	private final JwtUtil jwtUtil;
+
+	public AuthServiceImpl(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		this.employeeRepository = employeeRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
 	@Override
@@ -67,6 +71,6 @@ public class AuthServiceImpl implements AuthService {
 			throw new RuntimeException("Invalid Email or Password");
 		}
 
-		return "Login Successful";
+		return jwtUtil.generateToken(employee.getEmail());
 	}
 }
