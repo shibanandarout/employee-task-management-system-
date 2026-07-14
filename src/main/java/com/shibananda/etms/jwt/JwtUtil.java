@@ -1,11 +1,13 @@
 package com.shibananda.etms.jwt;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -16,7 +18,7 @@ public class JwtUtil {
 
 	private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
-	private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+	private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
 	public String generateToken(String email) {
 
@@ -25,5 +27,26 @@ public class JwtUtil {
 				.signWith(key)
 				.compact();
 	}
+	
+	public Claims extractClaims(String token) {
 
+	    return Jwts.parser()
+	               .verifyWith(key)
+	               .build()
+	               .parseSignedClaims(token)
+	               .getPayload();
+	}
+	
+	public String extractEmail(String token) {
+			return extractClaims(token).getSubject();
+	}
+
+	
+	public Date extractExpiration(String token) {
+		return extractClaims(token).getExpiration();
+	}
+	
+	public boolean isTokenExpird(String token) {
+			return extractExpiration(token).before(new Date());
+	}
 }
