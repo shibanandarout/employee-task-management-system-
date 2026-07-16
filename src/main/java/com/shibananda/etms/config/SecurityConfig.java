@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.shibananda.etms.exception.CustomAccessDeniedHandler;
+import com.shibananda.etms.exception.CustomAuthenticationEntryPoint;
 import com.shibananda.etms.jwt.JwtAuthenticationFilter;
 import com.shibananda.etms.serviceimpl.CustomUserDetailsService;
 
@@ -22,11 +24,19 @@ public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final CustomUserDetailsService customUserDetailsService;
+	
+	private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+	private final CustomAccessDeniedHandler accessDeniedHandler;
 
 	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-			CustomUserDetailsService customUserDetailsService) {
+			CustomUserDetailsService customUserDetailsService,
+			CustomAuthenticationEntryPoint authenticationEntryPoint,
+			CustomAccessDeniedHandler accessDeniedHandler) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 		this.customUserDetailsService = customUserDetailsService;
+		this.authenticationEntryPoint=authenticationEntryPoint;
+		this.accessDeniedHandler=accessDeniedHandler;
 	}
 
 	@Bean
@@ -38,7 +48,10 @@ public class SecurityConfig {
 						auth -> auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
 
 				.authenticationProvider(authenticationProvider())
-
+				
+				.exceptionHandling(exception -> exception
+											   .authenticationEntryPoint(authenticationEntryPoint)
+											   .accessDeniedHandler(accessDeniedHandler))
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
