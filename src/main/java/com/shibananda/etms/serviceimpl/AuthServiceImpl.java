@@ -73,4 +73,19 @@ public class AuthServiceImpl implements AuthService {
 
 		return jwtUtil.generateToken(employee.getEmail());
 	}
+	
+	
+	@Override
+	public EmployeeDTO getEmployeeByEmail(String email) {
+	    Employee employee = employeeRepository.findByEmail(email)
+	        .orElseThrow(() -> new RuntimeException("Employee not found"));
+	    EmployeeDTO dto = new EmployeeDTO();
+	    dto.setId(employee.getId());
+	    dto.setName(employee.getName());
+	    dto.setEmail(employee.getEmail());
+	    dto.setDepartment(employee.getDepartment());
+	    dto.setPhone(employee.getPhone());
+		dto.setRole(employee.getRole());
+		return dto;
+	}
 }

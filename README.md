@@ -8,7 +8,7 @@ A secure RESTful backend application built using **Spring Boot** that enables or
 
 The **Employee Task Management System (ETMS)** is designed to simplify employee and task management within an organization.
 
-The application follows a clean layered architecture consisting of **Controller**, **Service**, **Repository**, and **Entity** layers. It provides secure REST APIs for employee and task management, along with user registration and login using **JWT Authentication**.
+The application follows a clean layered architecture consisting of Controller, Service, Repository, and Entity layers. It provides secure REST APIs for employee and task management with JWT Authentication, Role-Based Authorization (ADMIN/EMPLOYEE), BCrypt Password Encryption, and Spring Security.
 
 ---
 
@@ -19,9 +19,15 @@ The application follows a clean layered architecture consisting of **Controller*
 - User Registration
 - User Login
 - JWT Token Generation
+- JWT Authentication Filter
 - Password Encryption using BCrypt
-- Duplicate Email Validation
 - Spring Security Integration
+- Role-Based Authorization (ADMIN / EMPLOYEE)
+- Protected REST APIs
+- Duplicate Email Validation
+- Custom AuthenticationEntryPoint
+- Custom AccessDeniedHandler
+- CORS Configuration for Angular Integration
 
 ---
 
@@ -60,10 +66,14 @@ The application follows a clean layered architecture consisting of **Controller*
 
 - PostgreSQL
 
+
 ### Security
 
+- Spring Security
 - JWT (JJWT)
 - BCrypt Password Encoder
+- CORS Configuration
+
 
 ### Tools
 
@@ -99,6 +109,8 @@ The project follows a layered architecture.
 
 # 🔐 Authentication Flow
 
+## Registration Flow
+
 ```text
 User Registration
         │
@@ -106,8 +118,10 @@ User Registration
 Password Encrypted using BCrypt
         │
         ▼
-Stored in PostgreSQL
+Employee Stored in PostgreSQL
 ```
+
+## Login & Authorization Flow
 
 ```text
 User Login
@@ -122,7 +136,19 @@ Password Verification
 JWT Token Generated
       │
       ▼
-Token Returned to Client
+JWT Returned to Client
+      │
+      ▼
+Angular sends JWT in Authorization Header
+      │
+      ▼
+JWT Authentication Filter
+      │
+      ▼
+Spring Security
+      │
+      ▼
+Protected REST APIs
 ```
 
 ---
@@ -185,7 +211,7 @@ server.port=8082
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/shibanandarout/employee-task-management-system-.git
+git clone https://github.com/shibanandarout/employee-task-management-system.git
 ```
 
 ---
@@ -246,7 +272,7 @@ http://localhost:8082
 | GET | `/api/employees` | Get All Employees |
 | GET | `/api/employees/{id}` | Get Employee By ID |
 | PUT | `/api/employees/{id}` | Update Employee |
-| DELETE | `/api/employees/{id}` | Delete Employee |
+| DELETE | `/api/employees/{id}` | Delete Employee (ADMIN only) |
 
 ---
 
@@ -277,12 +303,19 @@ All REST APIs were successfully tested using **Postman**.
 - Spring Data JPA
 - Hibernate ORM
 - PostgreSQL Integration
-- Global Exception Handling
 - DTO Pattern
+- Global Exception Handling
 - Spring Security
 - JWT Authentication
+- JWT Authentication Filter
+- Role-Based Authorization (ADMIN / EMPLOYEE)
+- Protected REST APIs
 - BCrypt Password Encryption
+- Secure Password Storage using BCrypt
 - Duplicate Email Validation
+- Custom AuthenticationEntryPoint
+- Custom AccessDeniedHandler
+- CORS Configuration
 - Maven Build Management
 - Clean and Maintainable Code
 
@@ -292,14 +325,15 @@ All REST APIs were successfully tested using **Postman**.
 
 The following features are planned for future versions:
 
-- JWT Token Validation
-- Role-Based Authorization (Admin & Employee)
-- Protected REST APIs
+- Refresh Token Authentication
+- Forgot Password & Reset Password
+- Email Verification
 - Swagger / OpenAPI Documentation
 - Pagination & Sorting
 - Search & Filtering
 - Docker Containerization
 - Unit & Integration Testing
+- Dashboard Analytics
 - Email Notifications
 
 ---
