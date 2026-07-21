@@ -27,7 +27,7 @@ public class EmployeeDTO {
 
 	@NotBlank(message = "Password is required")
 	@Size(min = 6, message = "Password must be at least 6 characters")
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLYwwww)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
 	@NotBlank(message = "Role is required")
